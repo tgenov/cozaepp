@@ -137,6 +137,22 @@ module CozaEPP
       return {:status => statusCode, :text => statusMsg, :cltrid => cltrid, :svtrid => svtrid }
     end
     
+    def update_domain_ns(domainName,
+                         nsHostname1,
+                         nsipv4Address1,
+                         nsipv6Address1,
+                         nsHostname2,
+                         nsipv4Address2,
+                         nsipv6Address2)
+      cltrid = gen_cltrid
+      xml = ERB.new(File.read(@gemRoot + "/erb/update_domain_ns.erb")).result(binding)
+      result = @epp.send_request(xml)
+      statusCode = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result")[:code]
+      statusMsg = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result//epp:msg/")
+      svtrid = Hpricot::XML(result).at("//epp:epp//epp:response//epp:trID//epp:svTRID/")
+      return {:status => statusCode, :text => statusMsg, :cltrid => cltrid, :svtrid => svtrid }
+    end
+    
     def info_contact(contactId,contactPassword)
       cltrid = gen_cltrid
       xml = ERB.new(File.read(@gemRoot + "/erb/info_contact.erb")).result(binding)
@@ -150,6 +166,29 @@ module CozaEPP
       else 
         return {:status => statusCode, :text => statusMsg, :cltrid => cltrid, :svtrid => svtrid }
       end
+    end
+    
+    def info_contact_linkeddomains(contactId,contactPassword)
+      cltrid = gen_cltrid
+      xml = ERB.new(File.read(@gemRoot + "/erb/info_contact_coza.erb")).result(binding)
+      result = @epp.send_request(xml)
+      puts result
+      statusCode = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result")[:code]
+      statusMsg = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result//epp:msg/")
+      svtrid = Hpricot::XML(result).at("//epp:epp//epp:response//epp:trID//epp:svTRID/")
+      domainData = Hpricot::XML(result).at("//epp:epp//epp:response//epp:extension//cozac:infData//")
+      return {:status => statusCode, :text => statusMsg, :cltrid => cltrid, :svtrid => svtrid, :domaindata => domainData }
+    end
+    
+    def info_balance(contactId)
+      cltrid = gen_cltrid
+      xml = ERB.new(File.read(@gemRoot + "/erb/info_balance.erb")).result(binding)
+      result = @epp.send_request(xml)
+      puts result
+      statusCode = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result")[:code]
+      statusMsg = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result//epp:msg/")
+      svtrid = Hpricot::XML(result).at("//epp:epp//epp:response//epp:trID//epp:svTRID/")
+      return {:status => statusCode, :text => statusMsg, :cltrid => cltrid, :svtrid => svtrid}
     end
     
     def info_domain(domainName)
