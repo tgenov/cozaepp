@@ -3,12 +3,11 @@
   <command>
     <create>
       <host:create xmlns:host="urn:ietf:params:xml:ns:host-1.0">
-        <host:name>ns1.example.test.dnservices.co.za</host:name>
-        <host:addr ip="v4">192.168.0.1</host:addr>
-        <host:addr ip="v6">fc00::1</host:addr>
+      <host:name><%= serverHostname %></host:name>
+      <host:addr ip="v4"><%= ipv4Address %></host:addr>
       </host:create>
     </create>
-    <clTRID>ABC-12345</clTRID>
+    <clTRID><%= cltrid %></clTRID>
   </command>
 </epp>
 

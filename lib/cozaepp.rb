@@ -22,25 +22,245 @@ module CozaEPP
     end
 
     def login
-      cltrid = Time.now.strftime("MTNBUS-%Y%m%d-%H%m%S-" + gen_random_string)
+      cltrid = gen_cltrid
       xml = ERB.new(File.read(@gemRoot + "/erb/login.erb")).result(binding)
       result = @epp.send_request(xml)
       statusCode = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result")[:code]
       statusMsg = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result//epp:msg/")
-      return {:status => statusCode, :text => statusMsg, :cltrid => ctltrid }
+      svtrid = Hpricot::XML(result).at("//epp:epp//epp:response//epp:trID//epp:svTRID/")
+      return {:status => statusCode, :text => statusMsg, :cltrid => cltrid, :svtrid => svtrid}
     end
     
     def logout
-      cltrid = Time.now.strftime("MTNBUS-%Y%m%d-%H%m%S-" + gen_random_string)
+      cltrid = gen_cltrid
       xml = ERB.new(File.read(@gemRoot + "/erb/logout.erb")).result(binding)
       result = @epp.send_request(xml)
       statusCode = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result")[:code]
       statusMsg = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result//epp:msg/")
-      return {:status => statusCode, :text => statusMsg, :cltrid => ctltrid }
+      svtrid = Hpricot::XML(result).at("//epp:epp//epp:response//epp:trID//epp:svTRID/")
+      return {:status => statusCode, :text => statusMsg, :cltrid => cltrid, :svtrid => svtrid }
+    end
+    
+    def poll
+      cltrid = gen_cltrid
+      xml = ERB.new(File.read(@gemRoot + "/erb/poll.erb")).result(binding)
+      result = @epp.send_request(xml)
+      puts result
+      statusCode = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result")[:code]
+      statusMsg = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result//epp:msg/")
+      svtrid = Hpricot::XML(result).at("//epp:epp//epp:response//epp:trID//epp:svTRID/")
+      if statusCode == "1300"
+        return {:status => statusCode, \
+                :text => statusMsg, \
+                :cltrid => cltrid, \
+                :svtrid => svtrid
+              }
+      elsif statusCode == "1301"     
+        msgId = Hpricot::XML(result).at("//epp:epp//epp:response//epp:msgQ")[:id]
+        msgDate = Hpricot::XML(result).at("//epp:epp//epp:response//epp:msgQ//epp:qDate/")
+        msgText = Hpricot::XML(result).at("//epp:epp//epp:response//epp:msgQ//epp:msg/")
+        return {:status => statusCode, \
+                :text => statusMsg, \
+                :cltrid => cltrid, \
+                :svtrid => svtrid, \
+                :msgid =>  msgId, \
+                :msgdate => msgDate, \
+                :msgtext => msgText}
+      end
+    end
+    
+    def ack(messageId)
+      cltrid = gen_cltrid
+      xml = ERB.new(File.read(@gemRoot + "/erb/poll_ack.erb")).result(binding)
+      result = @epp.send_request(xml)
+      statusCode = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result")[:code]
+      statusMsg = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result//epp:msg/")
+      svtrid = Hpricot::XML(result).at("//epp:epp//epp:response//epp:trID//epp:svTRID/")
+      return {:status => statusCode, :text => statusMsg, :cltrid => cltrid, :svtrid => svtrid }
+    end
+    
+    def create_contact(contactId,
+                       contactName,
+                       contactOrg,
+                       contactStreet1,
+                       contactStreet2,
+                       contactStreet3,
+                       contactCity,
+                       contactProvince,
+                       contactPostalcode,
+                       contactCountry,
+                       contactTel,
+                       contactFax,
+                       contactEmail,
+                       contactPassword
+      )
+      cltrid = gen_cltrid
+      xml = ERB.new(File.read(@gemRoot + "/erb/create_contact.erb")).result(binding)
+      result = @epp.send_request(xml)
+      statusCode = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result")[:code]
+      statusMsg = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result//epp:msg/")
+      svtrid = Hpricot::XML(result).at("//epp:epp//epp:response//epp:trID//epp:svTRID/")
+      return {:status => statusCode, :text => statusMsg, :cltrid => cltrid, :svtrid => svtrid }
+    end
+    
+    def update_contact(contactId,
+                       contactName,
+                       contactOrg,
+                       contactStreet1,
+                       contactStreet2,
+                       contactStreet3,
+                       contactCity,
+                       contactProvince,
+                       contactPostalcode,
+                       contactCountry,
+                       contactTel,
+                       contactFax,
+                       contactEmail,
+                       contactPassword
+      )
+      cltrid = gen_cltrid
+      xml = ERB.new(File.read(@gemRoot + "/erb/update_contact.erb")).result(binding)
+      result = @epp.send_request(xml)
+      statusCode = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result")[:code]
+      statusMsg = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result//epp:msg/")
+      svtrid = Hpricot::XML(result).at("//epp:epp//epp:response//epp:trID//epp:svTRID/")
+      return {:status => statusCode, :text => statusMsg, :cltrid => cltrid, :svtrid => svtrid }
+    end
+    
+    def update_domain_registrant(domainName,registrant)
+      cltrid = gen_cltrid
+      xml = ERB.new(File.read(@gemRoot + "/erb/update_domain_registrant.erb")).result(binding)
+      result = @epp.send_request(xml)
+      statusCode = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result")[:code]
+      statusMsg = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result//epp:msg/")
+      svtrid = Hpricot::XML(result).at("//epp:epp//epp:response//epp:trID//epp:svTRID/")
+      return {:status => statusCode, :text => statusMsg, :cltrid => cltrid, :svtrid => svtrid }
+    end
+    
+    def info_contact(contactId,contactPassword)
+      cltrid = gen_cltrid
+      xml = ERB.new(File.read(@gemRoot + "/erb/info_contact.erb")).result(binding)
+      result = @epp.send_request(xml)
+      statusCode = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result")[:code]
+      statusMsg = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result//epp:msg/")
+      svtrid = Hpricot::XML(result).at("//epp:epp//epp:response//epp:trID//epp:svTRID/")
+      if statusCode == "1000" then
+        resData = Hpricot::XML(result).at("//epp:epp//epp:response//epp:resData//")
+        return {:status => statusCode, :text => statusMsg, :cltrid => cltrid, :svtrid => svtrid, :resdata => resData }
+      else 
+        return {:status => statusCode, :text => statusMsg, :cltrid => cltrid, :svtrid => svtrid }
+      end
+    end
+    
+    def info_domain(domainName)
+      cltrid = gen_cltrid
+      xml = ERB.new(File.read(@gemRoot + "/erb/info_domain.erb")).result(binding)
+      result = @epp.send_request(xml)
+      statusCode = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result")[:code]
+      statusMsg = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result//epp:msg/")
+      svtrid = Hpricot::XML(result).at("//epp:epp//epp:response//epp:trID//epp:svTRID/")
+      if statusCode == "1000" then
+        resData = Hpricot::XML(result).at("//epp:epp//epp:response//epp:resData//")
+        return {:status => statusCode, :text => statusMsg, :cltrid => cltrid, :svtrid => svtrid, :resdata => resData }
+      else 
+        return {:status => statusCode, :text => statusMsg, :cltrid => cltrid, :svtrid => svtrid }
+      end
+    end
+    
+    def create_host(serverHostname, ipv4Address, ipv6Address=nil)
+      cltrid = gen_cltrid
+      xml = ERB.new(File.read(@gemRoot + "/erb/create_host.erb")).result(binding)
+      result = @epp.send_request(xml)
+      statusCode = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result")[:code]
+      statusMsg = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result//epp:msg/")
+      svtrid = Hpricot::XML(result).at("//epp:epp//epp:response//epp:trID//epp:svTRID/")
+      return {:status => statusCode, :text => statusMsg, :cltrid => cltrid, :svtrid => svtrid }
+    end
+    
+    def create_domain_with_ns(domainName,
+                      registrant,
+                      nsHostname1,
+                      nsHostname2,
+                      domainSecret
+                      )
+                      
+      cltrid = gen_cltrid
+      xml = ERB.new(File.read(@gemRoot + "/erb/create_domain_with_ns.erb")).result(binding)
+      result = @epp.send_request(xml)
+      puts result
+      statusCode = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result")[:code]
+      statusMsg = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result//epp:msg/")
+      svtrid = Hpricot::XML(result).at("//epp:epp//epp:response//epp:trID//epp:svTRID/")
+      return {:status => statusCode, :text => statusMsg, :cltrid => cltrid, :svtrid => svtrid }  
+    end
+    
+    def create_domain_with_host(domainName,
+                      registrant,
+                      nsHostname1,
+                      nsipv4Address1,
+                      nsipv6Address1,
+                      nsHostname2,
+                      nsipv4Address2,
+                      nsipv6Address2,
+                      domainSecret
+                      )
+                      
+      cltrid = gen_cltrid
+      xml = ERB.new(File.read(@gemRoot + "/erb/create_domain_with_host.erb")).result(binding)
+      result = @epp.send_request(xml)
+      statusCode = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result")[:code]
+      statusMsg = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result//epp:msg/")
+      svtrid = Hpricot::XML(result).at("//epp:epp//epp:response//epp:trID//epp:svTRID/")
+      return {:status => statusCode, :text => statusMsg, :cltrid => cltrid, :svtrid => svtrid }  
+    end
+    
+    def delete_domain(domainName)
+        cltrid = gen_cltrid
+        xml = ERB.new(File.read(@gemRoot + "/erb/delete_domain.erb")).result(binding)
+        result = @epp.send_request(xml)
+        statusCode = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result")[:code]
+        statusMsg = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result//epp:msg/")
+        svtrid = Hpricot::XML(result).at("//epp:epp//epp:response//epp:trID//epp:svTRID/")
+        return {:status => statusCode, :text => statusMsg, :cltrid => cltrid, :svtrid => svtrid }  
+    end
+    
+    def renew_domain(domainName,curExpiryDate)
+        cltrid = gen_cltrid
+        xml = ERB.new(File.read(@gemRoot + "/erb/renew.erb")).result(binding)
+        result = @epp.send_request(xml)
+        puts result
+        statusCode = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result")[:code]
+        statusMsg = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result//epp:msg/")
+        svtrid = Hpricot::XML(result).at("//epp:epp//epp:response//epp:trID//epp:svTRID/")
+        return {:status => statusCode, :text => statusMsg, :cltrid => cltrid, :svtrid => svtrid }  
+    end
+    
+    def apply_clienthold(domainName)
+        cltrid = gen_cltrid
+        xml = ERB.new(File.read(@gemRoot + "/erb/apply_clienthold.erb")).result(binding)
+        result = @epp.send_request(xml)
+        statusCode = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result")[:code]
+        statusMsg = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result//epp:msg/")
+        svtrid = Hpricot::XML(result).at("//epp:epp//epp:response//epp:trID//epp:svTRID/")
+        return {:status => statusCode, :text => statusMsg, :cltrid => cltrid, :svtrid => svtrid }  
+    end
+    
+    def remove_clienthold(domainName)
+        cltrid = gen_cltrid
+        xml = ERB.new(File.read(@gemRoot + "/erb/remove_clienthold.erb")).result(binding)
+        result = @epp.send_request(xml)
+        statusCode = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result")[:code]
+        statusMsg = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result//epp:msg/")
+        svtrid = Hpricot::XML(result).at("//epp:epp//epp:response//epp:trID//epp:svTRID/")
+        return {:status => statusCode, :text => statusMsg, :cltrid => cltrid, :svtrid => svtrid }  
     end
     
     private
+    def gen_cltrid
+      return "MTNBUS-" + Time.now.to_i.to_s + "-" + gen_random_string    
+    end
     
+    private
     def gen_random_string(length=32)
         chars = 'abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ23456789'  
         Array.new(length) { chars[rand(chars.length)].chr }.join  

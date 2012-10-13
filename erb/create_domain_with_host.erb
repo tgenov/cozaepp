@@ -3,26 +3,23 @@
   <command>
     <create>
       <domain:create xmlns:domain="urn:ietf:params:xml:ns:domain-1.0" xsi:schemaLocation="urn:ietf:params:xml:ns:domain-1.0 domain-1.0.xsd">
-        <domain:name>example.test.dnservices.co.za</domain:name>
-        <domain:period unit="y">1</domain:period>
+      <domain:name><%= domainName %></domain:name>
         <domain:ns>
             <domain:hostAttr>
-                <domain:hostName>ns1.example.test.dnservices.co.za</domain:hostName>
-                <domain:hostAddr ip="v4">192.168.0.1</domain:hostAddr>
+            <domain:hostName><%= nsHostname1 %></domain:hostName>
+            <domain:hostAddr ip="v4"><%= nsipv4Address1 %></domain:hostAddr>
             </domain:hostAttr>
             <domain:hostAttr>
-                <domain:hostName>example.test.dnservices.co.za</domain:hostName>
-                <domain:hostAddr ip="v4">192.168.0.2</domain:hostAddr>
+            <domain:hostName><%= nsHostname2 %></domain:hostName>
+            <domain:hostAddr ip="v4"><%= nsipv4Address2 %></domain:hostAddr>
             </domain:hostAttr>
         </domain:ns>
-        <domain:registrant>C000245</domain:registrant>
-        <domain:contact type="admin">C28485</domain:contact>
-        <domain:contact type="tech">C28485</domain:contact>
+        <domain:registrant><%= registrant %></domain:registrant>
         <domain:authInfo>
-          <domain:pw>MySecret</domain:pw>
+        <domain:pw><%= domainSecret %></domain:pw>
         </domain:authInfo>
       </domain:create>
     </create>
-    <clTRID>cd60707323607</clTRID>
+    <clTRID><%= cltrid %></clTRID>
   </command>
 </epp>

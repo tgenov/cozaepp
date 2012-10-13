@@ -3,10 +3,10 @@
  <command>
   <delete>
    <domain:delete xmlns:domain="urn:ietf:params:xml:ns:domain-1.0" xsi:schemaLocation="urn:ietf:params:xml:ns:domain-1.0 domain-1.0.xsd">
-       <domain:name>example.test.dnservices.co.za</domain:name>
+   <domain:name><%= domainName %></domain:name>
    </domain:delete>
   </delete>
-  <clTRID>NORID-EC0.4-0777-20100210091939-0770bd</clTRID>
+  <clTRID><%= cltrid %></clTRID>
  </command>
 </epp>
 

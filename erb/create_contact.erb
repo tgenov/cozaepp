@@ -3,19 +3,22 @@
   <command>
     <create>
       <contact:create xmlns:contact="urn:ietf:params:xml:ns:contact-1.0" xsi:schemaLocation="urn:ietf:params:xml:ns:contact-1.0 contact-1.0.xsd">
-        <contact:id>auto</contact:id>
+      <contact:id><%= contactId %></contact:id>
         <contact:postalInfo type="loc">
             <contact:name><%= contactName %></contact:name>
+              <contact:org><%= contactOrg %></contact:org>
           <contact:addr>
               <contact:street><%= contactStreet1 %></contact:street>
               <contact:street><%= contactStreet2 %></contact:street>
+              <contact:street><%= contactStreet3 %></contact:street>
               <contact:city><%= contactCity %></contact:city>
+              <contact:sp><%= contactProvince %></contact:sp>
               <contact:pc><%= contactPostalcode %></contact:pc>
               <contact:cc><%= contactCountry %></contact:cc>
           </contact:addr>
         </contact:postalInfo>
         <contact:voice><%= contactTel %></contact:voice>
-        <contact:fax x="01"><%= contactfax %></contact:fax>
+        <contact:fax x="01"><%= contactFax %></contact:fax>
         <contact:email><%= contactEmail %></contact:email>
         <contact:authInfo>
             <contact:pw><%= contactPassword %></contact:pw>

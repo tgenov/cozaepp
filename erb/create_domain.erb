@@ -3,20 +3,18 @@
   <command>
     <create>
       <domain:create xmlns:domain="urn:ietf:params:xml:ns:domain-1.0" xsi:schemaLocation="urn:ietf:params:xml:ns:domain-1.0 domain-1.0.xsd">
-        <domain:name>example41901.test.dnservices.co.za</domain:name>
+      <domain:name><%= domainName %></domain:name>
         <domain:ns>
-          <domain:hostObj>ns1.example.test.dnservices.co.za</domain:hostObj>
-          <domain:hostObj>ns2.example.test.dnservices.co.za</domain:hostObj>
+        <domain:hostObj><%= nsHostname1 %></domain:hostObj>
+        <domain:hostObj><%= nsHostname2 %></domain:hostObj>
         </domain:ns>
-        <domain:registrant>C000245</domain:registrant>
-        <domain:contact type="admin">C28485</domain:contact>
-        <domain:contact type="tech">C28485</domain:contact>
+        <domain:registrant><%= registrant %></domain:registrant>
         <domain:authInfo>
-          <domain:pw>MySecret</domain:pw>
+        <domain:pw><%= domainSecret %></domain:pw>
         </domain:authInfo>
       </domain:create>
     </create>
-    <clTRID>4444060707323607</clTRID>
+    <clTRID><%= cltrid %></clTRID>
   </command>
 </epp>
 
