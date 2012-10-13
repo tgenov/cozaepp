@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<epp xmlns="urn:ietf:params:xml:ns:epp-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd">
+  <command>
+    <create>
+      <contact:create xmlns:contact="urn:ietf:params:xml:ns:contact-1.0" xsi:schemaLocation="urn:ietf:params:xml:ns:contact-1.0 contact-1.0.xsd">
+        <contact:id>ed-registrar</contact:id>
+        <contact:postalInfo type="int">
+          <contact:name>Ed Pascoe</contact:name>
+          <contact:addr>
+            <contact:street>abc</contact:street>
+            <contact:city>Sandton</contact:city>
+            <contact:pc>2095</contact:pc>
+            <contact:cc>ZA</contact:cc>
+          </contact:addr>
+        </contact:postalInfo>
+        <contact:voice>+27.835551234</contact:voice>
+        <contact:fax x="01">+27.115551234</contact:fax>
+        <contact:email>registrytest@pascoe.co.za</contact:email>
+        <contact:authInfo>
+          <contact:pw>bobsyouraunty</contact:pw>
+        </contact:authInfo>
+      </contact:create>
+    </create>
+    <clTRID>NORID-5750-1265060682846224</clTRID>
+  </command>
+</epp>
+

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://co.za/epp/extensions/cozacontact-1-0"
+  xmlns:cozac="http://co.za/epp/extensions/cozacontact-1-0"
+  xmlns="http://www.w3.org/2001/XMLSchema"
+  elementFormDefault="qualified">
+
+  <annotation>
+    <documentation>
+      Extensible Provisioning Protocol v1.0 contact command extension schema for CO.ZA required extensions
+    </documentation>
+  </annotation>
+
+  <element name="update" type="cozac:updateType"/>
+  <element name="info" type="cozac:infoType"/>
+  <element name="infData" type="cozac:infoResponseType"/>
+  <element name="cozaData" type="cozac:cozaDataType"/>
+  
+  <complexType name="updateType">
+    <attribute name="cancelPendingAction" type="string" use="optional"/>
+  </complexType>
+
+  <complexType name="infoType">
+    <sequence>
+      <element name="domainListing" type="boolean" minOccurs="0"/>
+      <element name="balance" type="boolean" minOccurs="0"/>
+    </sequence>
+  </complexType>
+
+  <complexType name="infoResponseType">
+    <sequence>
+      <element name="domain" type="cozac:domainInfoType" minOccurs="0" maxOccurs="unbounded"/>
+      <element name="balance" type="double" minOccurs="0"/>
+    </sequence>
+  </complexType>
+  
+  <complexType name="cozaDataType">
+    <sequence>
+      <element name="detail">
+        <complexType>
+          <simpleContent>
+            <extension base="string">
+              <attribute name="result" type="cozac:resultType" use="required"/>
+            </extension>
+          </simpleContent>
+        </complexType>
+      </element>
+    </sequence>
+  </complexType>
+  
+  <simpleType name="resultType">
+    <restriction base="NMTOKEN">
+      <enumeration value="success"/>
+      <enumeration value="failure"/>
+    </restriction>
+  </simpleType>
+
+  <complexType name="domainInfoType">
+    <simpleContent>
+      <extension base="string">
+        <attribute name="level" type="cozac:levelType" use="required"/>
+      </extension>
+    </simpleContent>
+  </complexType>
+  
+  <simpleType name="levelType">
+    <restriction base="NMTOKEN">
+      <enumeration value="Owner"/>
+      <enumeration value="Contact"/>
+    </restriction>
+  </simpleType>
+  
+</schema>

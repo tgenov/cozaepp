@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://co.za/epp/extensions/cozadomain-1-0"
+  xmlns:cozad="http://co.za/epp/extensions/cozadomain-1-0"
+  xmlns="http://www.w3.org/2001/XMLSchema"
+  elementFormDefault="qualified">
+
+  <annotation>
+    <documentation>
+      Extensible Provisioning Protocol v1.0 domain command extension schema for CO.ZA required extensions
+    </documentation>
+  </annotation>
+
+  <element name="create" type="cozad:createType"/>
+  <element name="update" type="cozad:updateType"/>
+  <element name="info" type="cozad:infoType"/>
+  <element name="infData" type="cozad:infoResponseType"/>
+  <element name="cozaData" type="cozad:cozaDataType"/>
+  
+  <complexType name="chgType">
+    <sequence>
+      <element name="autorenew" type="cozad:autoRenewType" minOccurs="0"/>
+    </sequence>
+  </complexType>
+  
+  <complexType name="updateType">
+    <sequence>
+      <element name="chg" type="cozad:chgType" minOccurs="0"/>
+    </sequence>
+    <attribute name="cancelPendingAction" type="string" use="optional"/>
+  </complexType>  
+  
+  <complexType name="infoType">
+    <sequence>
+      <element name="transferQuote" type="boolean" minOccurs="0"/>
+    </sequence>
+  </complexType>  
+  
+  <complexType name="createType">
+    <sequence>
+      <element name="autorenew" type="cozad:autoRenewType" minOccurs="0"/>
+    </sequence>
+  </complexType>  
+  
+  <complexType name="infoResponseType">
+    <sequence>
+      <element name="autorenew" type="cozad:autoRenewType" minOccurs="0"/>
+      <element name="transferQuoteRes" type="cozad:transferQuoteResType" minOccurs="0"/>
+    </sequence>
+  </complexType>
+  
+  <complexType name="transferQuoteResType">
+    <sequence>
+      <element name="name" type="string"/>
+      <element name="cost" type="double"/>        
+    </sequence>
+  </complexType>
+  
+  <complexType name="cozaDataType">
+    <sequence>
+      <element name="detail">
+        <complexType>
+          <simpleContent>
+            <extension base="string">
+              <attribute name="result" type="cozad:resultType" use="required"/>
+            </extension>
+          </simpleContent>
+        </complexType>
+      </element>
+    </sequence>
+  </complexType>
+  
+  <simpleType name="resultType">
+    <restriction base="NMTOKEN">
+      <enumeration value="success"/>
+      <enumeration value="failure"/>
+    </restriction>
+  </simpleType>
+
+  <simpleType name="autoRenewType">
+    <restriction base="boolean">
+    </restriction>
+  </simpleType>
+  
+</schema>
