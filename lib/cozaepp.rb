@@ -22,21 +22,21 @@ module CozaEPP
     end
 
     def login
-      ctltrid = Time.now.strftime("MTNBUS-%Y%m%d-%H%m%S-" + gen_random_string)
+      cltrid = Time.now.strftime("MTNBUS-%Y%m%d-%H%m%S-" + gen_random_string)
       xml = ERB.new(File.read(@gemRoot + "/erb/login.erb")).result(binding)
       result = @epp.send_request(xml)
       statusCode = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result")[:code]
       statusMsg = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result//epp:msg/")
-      return {:status => statusCode, :text => statusMsg, :ctltrid => ctltrid }
+      return {:status => statusCode, :text => statusMsg, :cltrid => ctltrid }
     end
     
     def logout
-      ctltrid = Time.now.strftime("MTNBUS-%Y%m%d-%H%m%S-" + gen_random_string)
+      cltrid = Time.now.strftime("MTNBUS-%Y%m%d-%H%m%S-" + gen_random_string)
       xml = ERB.new(File.read(@gemRoot + "/erb/logout.erb")).result(binding)
       result = @epp.send_request(xml)
       statusCode = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result")[:code]
       statusMsg = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result//epp:msg/")
-      return {:status => statusCode, :text => statusMsg, :ctltrid => ctltrid }
+      return {:status => statusCode, :text => statusMsg, :cltrid => ctltrid }
     end
     
     private
