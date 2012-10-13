@@ -188,7 +188,8 @@ module CozaEPP
       statusCode = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result")[:code]
       statusMsg = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result//epp:msg/")
       svtrid = Hpricot::XML(result).at("//epp:epp//epp:response//epp:trID//epp:svTRID/")
-      return {:status => statusCode, :text => statusMsg, :cltrid => cltrid, :svtrid => svtrid}
+      balance = Hpricot::XML(result).at("//epp:epp//epp:response//epp:extension//cozac:balance/")
+      return {:status => statusCode, :text => statusMsg, :cltrid => cltrid, :svtrid => svtrid, :balance => balance}
     end
     
     def info_domain(domainName)
@@ -263,9 +264,32 @@ module CozaEPP
         return {:status => statusCode, :text => statusMsg, :cltrid => cltrid, :svtrid => svtrid }  
     end
     
+    def delete_contact(contactId)
+        cltrid = gen_cltrid
+        xml = ERB.new(File.read(@gemRoot + "/erb/delete_contact.erb")).result(binding)
+        result = @epp.send_request(xml)
+        puts result
+        statusCode = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result")[:code]
+        statusMsg = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result//epp:msg/")
+        svtrid = Hpricot::XML(result).at("//epp:epp//epp:response//epp:trID//epp:svTRID/")
+        return {:status => statusCode, :text => statusMsg, :cltrid => cltrid, :svtrid => svtrid }  
+    end
+    
     def renew_domain(domainName,curExpiryDate)
         cltrid = gen_cltrid
         xml = ERB.new(File.read(@gemRoot + "/erb/renew.erb")).result(binding)
+        result = @epp.send_request(xml)
+        puts result
+        statusCode = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result")[:code]
+        statusMsg = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result//epp:msg/")
+        svtrid = Hpricot::XML(result).at("//epp:epp//epp:response//epp:trID//epp:svTRID/")
+        return {:status => statusCode, :text => statusMsg, :cltrid => cltrid, :svtrid => svtrid }  
+    end
+    
+    #autorenew in [ "true", "false"]
+    def set_autorenew(domainName, autoRenew)
+        cltrid = gen_cltrid
+        xml = ERB.new(File.read(@gemRoot + "/erb/set_autorenew.erb")).result(binding)
         result = @epp.send_request(xml)
         puts result
         statusCode = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result")[:code]
