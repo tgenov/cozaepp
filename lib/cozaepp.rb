@@ -1,4 +1,5 @@
 require "socket"
+require "time"
 require "securerandom"
 require "erb"
 require "epp"
@@ -18,12 +19,31 @@ module CozaEPP
         :password => password
       )
       @epp.open_connection
-      self.login
     end
 
     def login
-      xml = ERB.new(File.read(@gemRoot + "/erb/login.erb")).result
-      puts xml
+      ctltrid = Time.now.strftime("MTNBUS-%Y%m%d-%H%m%S-" + gen_random_string)
+      xml = ERB.new(File.read(@gemRoot + "/erb/login.erb")).result(binding)
+      result = @epp.send_request(xml)
+      statusCode = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result")[:code]
+      statusMsg = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result//epp:msg/")
+      return {:status => statusCode, :text => statusMsg, :ctltrid => ctltrid }
+    end
+    
+    def logout
+      ctltrid = Time.now.strftime("MTNBUS-%Y%m%d-%H%m%S-" + gen_random_string)
+      xml = ERB.new(File.read(@gemRoot + "/erb/logout.erb")).result(binding)
+      result = @epp.send_request(xml)
+      statusCode = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result")[:code]
+      statusMsg = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result//epp:msg/")
+      return {:status => statusCode, :text => statusMsg, :ctltrid => ctltrid }
+    end
+    
+    private
+    
+    def gen_random_string(length=32)
+        chars = 'abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ23456789'  
+        Array.new(length) { chars[rand(chars.length)].chr }.join  
     end
   
   end
