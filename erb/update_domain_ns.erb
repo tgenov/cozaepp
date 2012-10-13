@@ -1,0 +1,20 @@
+<epp:epp xmlns:epp="urn:ietf:params:xml:ns:epp-1.0" xmlns:domain=
+"urn:ietf:params:xml:ns:domain-1.0">
+  <epp:command>
+    <epp:update>
+      <domain:update>
+        <domain:name><%= domainName %></domain:name>
+        <domain:add>
+          <domain:ns>
+            <domain:hostAttr>
+              <domain:hostName><%= nsHostname1 %></domain:hostName>
+              <domain:hostAddr ip="v4"><%= nsipv4Address1 %></domain:hostAddr>
+              <domain:hostName><%= nsHostname2 %></domain:hostName>
+              <domain:hostAddr ip="v4"><%= nsipv4Address2 %></domain:hostAddr>
+            </domain:hostAttr>
+          </domain:ns>
+        </domain:add>
+      </domain:update>
+    </epp:update>
+  </epp:command>
+</epp:epp>n
