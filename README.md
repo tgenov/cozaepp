@@ -2,6 +2,10 @@
 
 A Ruby API for passing messages to Uniforum's EPP-based co.za registry
 
+EPP extensions as per https://www.registry.net.za/content.php?wiki=1&contentid=112&title=What%20is%20EPP?
+
+TODO: Some of the "Transfer" operations are yet to be implemented
+
 ## Installation
 
 Add this line to your application's Gemfile:
