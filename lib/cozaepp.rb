@@ -140,10 +140,7 @@ module CozaEPP
     def update_domain_ns(domainName,
                          nsHostname1,
                          nsipv4Address1,
-                         nsipv6Address1,
-                         nsHostname2,
-                         nsipv4Address2,
-                         nsipv6Address2)
+                         nsipv6Address1)
       cltrid = gen_cltrid
       xml = ERB.new(File.read(@gemRoot + "/erb/update_domain_ns.erb")).result(binding)
       result = @epp.send_request(xml)
@@ -268,7 +265,6 @@ module CozaEPP
         cltrid = gen_cltrid
         xml = ERB.new(File.read(@gemRoot + "/erb/delete_contact.erb")).result(binding)
         result = @epp.send_request(xml)
-        puts result
         statusCode = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result")[:code]
         statusMsg = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result//epp:msg/")
         svtrid = Hpricot::XML(result).at("//epp:epp//epp:response//epp:trID//epp:svTRID/")
@@ -316,6 +312,30 @@ module CozaEPP
         statusMsg = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result//epp:msg/")
         svtrid = Hpricot::XML(result).at("//epp:epp//epp:response//epp:trID//epp:svTRID/")
         return {:status => statusCode, :text => statusMsg, :cltrid => cltrid, :svtrid => svtrid }  
+    end
+    
+    def transfer_domain(domainName)
+        cltrid = gen_cltrid
+        xml = ERB.new(File.read(@gemRoot + "/erb/transfer_domain.erb")).result(binding)
+        result = @epp.send_request(xml)
+        puts result
+        statusCode = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result")[:code]
+        statusMsg = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result//epp:msg/")
+        svtrid = Hpricot::XML(result).at("//epp:epp//epp:response//epp:trID//epp:svTRID/")
+        resData = Hpricot::XML(result).at("//epp:epp//epp:response//epp:resData//")
+        return {:status => statusCode, :text => statusMsg, :cltrid => cltrid, :svtrid => svtrid, :resdata => resData }  
+    end
+    
+    def transfer_approve(domainName)
+      cltrid = gen_cltrid
+      xml = ERB.new(File.read(@gemRoot + "/erb/transfer_approve.erb")).result(binding)
+      result = @epp.send_request(xml)
+      puts result
+      statusCode = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result")[:code]
+      statusMsg = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result//epp:msg/")
+      svtrid = Hpricot::XML(result).at("//epp:epp//epp:response//epp:trID//epp:svTRID/")
+      resData = Hpricot::XML(result).at("//epp:epp//epp:response//epp:resData//")
+      return {:status => statusCode, :text => statusMsg, :cltrid => cltrid, :svtrid => svtrid, :resdata => resData }
     end
     
     private

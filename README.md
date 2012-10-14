@@ -1,6 +1,6 @@
 # Cozaepp
 
-TODO: Write a gem description
+A Ruby API for passing messages to Uniforum's EPP-based co.za registry
 
 ## Installation
 
