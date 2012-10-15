@@ -3,11 +3,9 @@
   <command>
     <check>
       <domain:check xmlns:domain="urn:ietf:params:xml:ns:domain-1.0">
-        <domain:name>example.test.dnservices.co.za</domain:name>
-        <domain:name>anotherexample.test.dnservices.co.za</domain:name>
-        <domain:name>test.test.dnservices.co.za</domain:name>
+      <domain:name><%= domainName %></domain:name>
       </domain:check>
     </check>
-    <clTRID>ABC-12345</clTRID>
+    <clTRID><%= cltrid %></clTRID>
   </command>
 </epp>

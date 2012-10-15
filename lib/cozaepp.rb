@@ -59,10 +59,12 @@ module CozaEPP
         msgId = Hpricot::XML(result).at("//epp:epp//epp:response//epp:msgQ")[:id]
         msgDate = Hpricot::XML(result).at("//epp:epp//epp:response//epp:msgQ//epp:qDate/")
         msgText = Hpricot::XML(result).at("//epp:epp//epp:response//epp:msgQ//epp:msg/")
+        msgCount = Hpricot::XML(result).at("//epp:epp//epp:response//epp:msgQ")[:count]
         return {:status => statusCode, \
                 :text => statusMsg, \
                 :cltrid => cltrid, \
                 :svtrid => svtrid, \
+                :msgcount => msgCount, \
                 :msgid =>  msgId, \
                 :msgdate => msgDate, \
                 :msgtext => msgText}
@@ -169,7 +171,6 @@ module CozaEPP
       cltrid = gen_cltrid
       xml = ERB.new(File.read(@gemRoot + "/erb/info_contact_coza.erb")).result(binding)
       result = @epp.send_request(xml)
-      puts result
       statusCode = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result")[:code]
       statusMsg = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result//epp:msg/")
       svtrid = Hpricot::XML(result).at("//epp:epp//epp:response//epp:trID//epp:svTRID/")
@@ -181,7 +182,6 @@ module CozaEPP
       cltrid = gen_cltrid
       xml = ERB.new(File.read(@gemRoot + "/erb/info_balance.erb")).result(binding)
       result = @epp.send_request(xml)
-      puts result
       statusCode = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result")[:code]
       statusMsg = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result//epp:msg/")
       svtrid = Hpricot::XML(result).at("//epp:epp//epp:response//epp:trID//epp:svTRID/")
@@ -224,7 +224,6 @@ module CozaEPP
       cltrid = gen_cltrid
       xml = ERB.new(File.read(@gemRoot + "/erb/create_domain_with_ns.erb")).result(binding)
       result = @epp.send_request(xml)
-      puts result
       statusCode = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result")[:code]
       statusMsg = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result//epp:msg/")
       svtrid = Hpricot::XML(result).at("//epp:epp//epp:response//epp:trID//epp:svTRID/")
@@ -265,6 +264,17 @@ module CozaEPP
         cltrid = gen_cltrid
         xml = ERB.new(File.read(@gemRoot + "/erb/delete_contact.erb")).result(binding)
         result = @epp.send_request(xml)
+        statusCode = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result")[:code]
+        statusMsg = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result//epp:msg/")
+        svtrid = Hpricot::XML(result).at("//epp:epp//epp:response//epp:trID//epp:svTRID/")
+        return {:status => statusCode, :text => statusMsg, :cltrid => cltrid, :svtrid => svtrid }  
+    end
+    
+    def check_domain(domainName)
+        cltrid = gen_cltrid
+        xml = ERB.new(File.read(@gemRoot + "/erb/check_domain.erb")).result(binding)
+        result = @epp.send_request(xml)
+        puts result
         statusCode = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result")[:code]
         statusMsg = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result//epp:msg/")
         svtrid = Hpricot::XML(result).at("//epp:epp//epp:response//epp:trID//epp:svTRID/")
