@@ -15,5 +15,4 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.version       = Cozaepp::VERSION
 
-  gem.add_dependency("epp", ">= 1.4.0")
 end
