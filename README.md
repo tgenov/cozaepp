@@ -13,6 +13,7 @@ N.B version 0.0.2+ requires an SSL-patched version of the epp gem found at https
 Option 1:
 
    gem install cozaepp
+    
    git clone https://github.com/tgenov/epp && cd epp && rake install
 
 Option 2:
