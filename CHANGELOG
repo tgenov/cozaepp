@@ -1,0 +1,6 @@
+Version 0.0.2
+ * Added SSL functionality (required by the production EPP service)
+
+ Version 0.0.1
+ * Initial version (built while testing accreditation against the test EPP environment)
+ * Supports all EPP messages documented by the registry, but a lot of the return data can be cleaned up. 
