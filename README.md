@@ -6,7 +6,7 @@ EPP extensions as per https://www.registry.net.za/content.php?wiki=1&contentid=1
 
 TODO: Some of the "Transfer" operations are yet to be implemented
 
-N.B version 0.0.2 requires an SSL-patches version of the epp gem found at https://github.com/tgenov/epp (I'll get around to creating a gem for it eventually)
+N.B version 0.0.2 requires an SSL-patched version of the epp gem found at https://github.com/tgenov/epp (I'll get around to creating a gem for it eventually)
 
 ## Installation
 

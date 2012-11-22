@@ -1,7 +1,9 @@
+Version 0.0.3
+ *Removed dependency on epp gem from rubygems.org since it lacks SSL features (see README for installing SSL-capable gem)
+
 Version 0.0.2
  * Added SSL functionality (required by the production EPP service)
    Depends on an SSL-patched version of the EPP gem which can be found at https://github.com/tgenov/epp
-
 
  Version 0.0.1
  * Initial version (built while testing accreditation against the test EPP environment)
