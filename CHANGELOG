@@ -1,3 +1,6 @@
+Version 0.0.4
+ *Merge https://github.com/tgenov/cozaepp/commit/4605eb8107d259bc38dc3571381934be4368c92d
+
 Version 0.0.3
  *Removed dependency on epp gem from rubygems.org since it lacks SSL features (see README for installing SSL-capable gem)
 
