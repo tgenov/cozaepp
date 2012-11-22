@@ -7,7 +7,7 @@ require "cozaepp/version"
 
 module CozaEPP
   class Client
-    def initialize(server, tag, password, port = 3121)  
+    def initialize(server, tag, password, sslcert = nil, sslkey = nil, port = 3121)  
       raise ArgumentError unless server and tag and password
       @gemRoot = Gem::Specification.find_by_name("cozaepp").gem_dir
       @eppTag = tag
@@ -16,7 +16,9 @@ module CozaEPP
         :server => server,
         :port => port,
         :tag => tag,
-        :password => password
+        :password => password,
+        :sslcert => sslcert,
+        :sslkey => sslkey
       )
       @epp.open_connection
     end
@@ -285,7 +287,6 @@ module CozaEPP
         cltrid = gen_cltrid
         xml = ERB.new(File.read(@gemRoot + "/erb/renew.erb")).result(binding)
         result = @epp.send_request(xml)
-        puts result
         statusCode = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result")[:code]
         statusMsg = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result//epp:msg/")
         svtrid = Hpricot::XML(result).at("//epp:epp//epp:response//epp:trID//epp:svTRID/")
@@ -297,7 +298,6 @@ module CozaEPP
         cltrid = gen_cltrid
         xml = ERB.new(File.read(@gemRoot + "/erb/set_autorenew.erb")).result(binding)
         result = @epp.send_request(xml)
-        puts result
         statusCode = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result")[:code]
         statusMsg = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result//epp:msg/")
         svtrid = Hpricot::XML(result).at("//epp:epp//epp:response//epp:trID//epp:svTRID/")
