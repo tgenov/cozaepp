@@ -200,7 +200,16 @@ module CozaEPP
       svtrid = Hpricot::XML(result).at("//epp:epp//epp:response//epp:trID//epp:svTRID/")
       if statusCode == "1000" then
         resData = Hpricot::XML(result).at("//epp:epp//epp:response//epp:resData//")
-        return {:status => statusCode, :text => statusMsg, :cltrid => cltrid, :svtrid => svtrid, :resdata => resData }
+        infoDomain = {
+          :domainName => Hpricot::XML(resData.to_s).at("//epp:resData//domain:infData//domain:name/"),
+          :domainRoid => Hpricot::XML(resData.to_s).at("//epp:resData//domain:infData//domain:roid/"),
+          :domainNs => Array.new,
+          :domainClID => Hpricot::XML(resData.to_s).at("//epp:resData//domain:infData//domain:clID/"),
+        }
+        Hpricot::XML(resData.to_s).search("//epp:resData//domain:infData//domain:ns//domain:hostAttr//domain:hostName/").each do |ns|
+          infoDomain[:domainNs] << ns
+        end
+        return {:status => statusCode, :text => statusMsg, :cltrid => cltrid, :svtrid => svtrid, :resdata => infoDomain }
       else 
         return {:status => statusCode, :text => statusMsg, :cltrid => cltrid, :svtrid => svtrid }
       end
