@@ -84,18 +84,27 @@ module CozaEPP
     end
 
     def add_ns_host(domainName,
-      nsHostname1,
-      nsipv4Address1
-      )
-    cltrid = gen_cltrid
-    xml = ERB.new(File.read(@gemRoot + "/erb/add_ns.erb")).result(binding)
-    result = @epp.send_request(xml)
-    statusCode = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result")[:code]
-    statusMsg = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result//epp:msg/")
-    svtrid = Hpricot::XML(result).at("//epp:epp//epp:response//epp:trID//epp:svTRID/")
-    return {:status => statusCode, :text => statusMsg, :cltrid => cltrid, :svtrid => svtrid }
-  end
+                    nsHostname1,
+                    nsipv4Address1)
+      cltrid = gen_cltrid
+      xml = ERB.new(File.read(@gemRoot + "/erb/add_ns.erb")).result(binding)
+      result = @epp.send_request(xml)
+      statusCode = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result")[:code]
+      statusMsg = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result//epp:msg/")
+      svtrid = Hpricot::XML(result).at("//epp:epp//epp:response//epp:trID//epp:svTRID/")
+      return {:status => statusCode, :text => statusMsg, :cltrid => cltrid, :svtrid => svtrid }
+    end
 
+    def cancel_action(domainName, \
+                      actionName)
+      xml = ERB.new(File.read(@gemRoot + "/erb/cancel_action.erb")).result(binding)
+      result = @epp.send_request(xml)
+      statusCode = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result")[:code]
+      statusMsg = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result//epp:msg/")
+      svtrid = Hpricot::XML(result).at("//epp:epp//epp:response//epp:trID//epp:svTRID/")
+      return {:status => statusCode, :text => statusMsg, :cltrid => cltrid, :svtrid => svtrid }     
+    end
+    
     def create_contact(contactId,
                        contactName,
                        contactOrg,
