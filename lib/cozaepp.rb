@@ -315,6 +315,17 @@ module CozaEPP
         return {:status => statusCode, :text => statusMsg, :cltrid => cltrid, :svtrid => svtrid }
     end
 
+    def delete_ns(domainName,
+                  nsHostname)
+      cltrid = gen_cltrid
+      xml = ERB.new(File.read(@gemRoot + "/erb/delete_ns.erb")).result(binding)
+      result = @epp.send_request(xml)
+      statusCode = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result")[:code]
+      statusMsg = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result//epp:msg/")
+      svtrid = Hpricot::XML(result).at("//epp:epp//epp:response//epp:trID//epp:svTRID/")
+      return {:status => statusCode, :text => statusMsg, :cltrid => cltrid, :svtrid => svtrid }
+    end
+
     def renew_domain(domainName,curExpiryDate)
         cltrid = gen_cltrid
         xml = ERB.new(File.read(@gemRoot + "/erb/renew.erb")).result(binding)

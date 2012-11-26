@@ -1,3 +1,9 @@
+Version 0.0.5
+*New EPP messages -
+ -cancel_action() - cancels pending events
+ -add_ns() - adds a new NS record for a domain
+ -delete_ns() - deletes an NS record from a domain
+
 Version 0.0.4
  *Merge https://github.com/tgenov/cozaepp/commit/4605eb8107d259bc38dc3571381934be4368c92d
 
