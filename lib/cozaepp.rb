@@ -95,8 +95,9 @@ module CozaEPP
       return {:status => statusCode, :text => statusMsg, :cltrid => cltrid, :svtrid => svtrid }
     end
 
-    def cancel_action(domainName, \
+    def cancel_action(domainName,
                       actionName)
+      cltrid = gen_cltrid
       xml = ERB.new(File.read(@gemRoot + "/erb/cancel_action.erb")).result(binding)
       result = @epp.send_request(xml)
       statusCode = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result")[:code]
@@ -104,7 +105,7 @@ module CozaEPP
       svtrid = Hpricot::XML(result).at("//epp:epp//epp:response//epp:trID//epp:svTRID/")
       return {:status => statusCode, :text => statusMsg, :cltrid => cltrid, :svtrid => svtrid }     
     end
-    
+
     def create_contact(contactId,
                        contactName,
                        contactOrg,
