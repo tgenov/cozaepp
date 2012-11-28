@@ -211,7 +211,7 @@ module CozaEPP
         Hpricot::XML(resData.to_s).search("//epp:resData//contact:infData//contact:postalInfo//contact:addr//contact:street/").each do |street|
           infoContact[:contactStreet] << street
         end
-        return {:status => statusCode, :text => statusMsg, :cltrid => cltrid, :svtrid => svtrid, :resdata => resData }
+        return {:status => statusCode, :text => statusMsg, :cltrid => cltrid, :svtrid => svtrid, :resdata => resData, :infocontact => infoContact }
       else
         return {:status => statusCode, :text => statusMsg, :cltrid => cltrid, :svtrid => svtrid }
       end
