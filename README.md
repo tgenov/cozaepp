@@ -6,19 +6,19 @@ EPP extensions as per https://www.registry.net.za/content.php?wiki=1&contentid=1
 
 TODO: Some of the "Transfer" operations are yet to be implemented
 
+N.B version 0.0.2+ requires an SSL-patched version of the epp gem found at https://github.com/tgenov/epp (I'll get around to publishing the gem on rubygems.org eventuall) for now pick an installation option:
+
 ## Installation
 
-Add this line to your application's Gemfile:
+Option 1:
 
-    gem 'cozaepp'
+   gem install cozaepp
+    
+   git clone https://github.com/tgenov/epp && cd epp && rake install
 
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install cozaepp
+Option 2:
+ 
+   git clone https://github.com/tgenov/cozaepp && cd cozaepp && bundle install && rake install
 
 ## Usage
 

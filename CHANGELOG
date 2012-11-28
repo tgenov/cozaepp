@@ -1,0 +1,19 @@
+Version 0.0.5
+*New EPP messages -
+ -cancel_action() - cancels pending events
+ -add_ns() - adds a new NS record for a domain
+ -delete_ns() - deletes an NS record from a domain
+
+Version 0.0.4
+ *Merge https://github.com/tgenov/cozaepp/commit/4605eb8107d259bc38dc3571381934be4368c92d
+
+Version 0.0.3
+ *Removed dependency on epp gem from rubygems.org since it lacks SSL features (see README for installing SSL-capable gem)
+
+Version 0.0.2
+ * Added SSL functionality (required by the production EPP service)
+   Depends on an SSL-patched version of the EPP gem which can be found at https://github.com/tgenov/epp
+
+ Version 0.0.1
+ * Initial version (built while testing accreditation against the test EPP environment)
+ * Supports all EPP messages documented by the registry, but a lot of the return data can be cleaned up. 
