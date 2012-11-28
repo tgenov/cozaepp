@@ -161,6 +161,31 @@ module CozaEPP
       svtrid = Hpricot::XML(result).at("//epp:epp//epp:response//epp:trID//epp:svTRID/")
       if statusCode == "1000" then
         resData = Hpricot::XML(result).at("//epp:epp//epp:response//epp:resData//")
+        infoContact = {
+          :contactStatus => Array.new,
+          :contactName => Hpricot::XML(resData.to_s).at("//epp:resData//contact:infData//contact:postalInfo//contact:name/"),
+          :contactOrg => Hpricot::XML(resData.to_s).at("//epp:resData//contact:infData//contact:postalInfo//contact:org/"),
+          :contactStreet => Array.new,
+          :contactCity => Hpricot::XML(resData.to_s).at("//epp:resData//contact:infData//contact:postalInfo//contact:addr//contact:city/"),
+          :contactSp => Hpricot::XML(resData.to_s).at("//epp:resData//contact:infData//contact:postalInfo//contact:addr//contact:sp/"),
+          :contactPc => Hpricot::XML(resData.to_s).at("//epp:resData//contact:infData//contact:postalInfo//contact:addr//contact:pc/"),
+          :contactCc => Hpricot::XML(resData.to_s).at("//epp:resData//contact:infData//contact:postalInfo//contact:addr//contact:cc/"),
+          :contactVoice => Hpricot::XML(resData.to_s).at("//epp:resData//contact:infData//contact:voice/"),
+          :contactFax => Hpricot::XML(resData.to_s).at("//epp:resData//contact:infData//contact:fax/"),
+          :contactEmail => Hpricot::XML(resData.to_s).at("//epp:resData//contact:infData//contact:email/"),
+          :contactVoice => Hpricot::XML(resData.to_s).at("//epp:resData//contact:infData//contact:voice/"),
+          :contactClID => Hpricot::XML(resData.to_s).at("//epp:resData//contact:infData//contact:clID/"),
+          :contactCrID => Hpricot::XML(resData.to_s).at("//epp:resData//contact:infData//contact:crID/"),
+          :contactCrDate => Hpricot::XML(resData.to_s).at("//epp:resData//contact:infData//contact:crDate/"),
+          :contactUpID => Hpricot::XML(resData.to_s).at("//epp:resData//contact:infData//contact:upID/"),
+          :contactUpDate => Hpricot::XML(resData.to_s).at("//epp:resData//contact:infData//contact:upDate/"),
+        }
+        Hpricot::XML(resData.to_s).search("//epp:resData//contact:infData//contact:status//s/").each do |status|
+          infoContact[:contactStatus] << status
+        end
+        Hpricot::XML(resData.to_s).search("//epp:resData//contact:infData//contact:postalInfo//contact:addr//contact:street/").each do |street|
+          infoContact[:contactStreet] << street
+        end
         return {:status => statusCode, :text => statusMsg, :cltrid => cltrid, :svtrid => svtrid, :resdata => resData }
       else 
         return {:status => statusCode, :text => statusMsg, :cltrid => cltrid, :svtrid => svtrid }
