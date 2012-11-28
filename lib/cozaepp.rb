@@ -203,6 +203,11 @@ module CozaEPP
           :domainRoid => Hpricot::XML(resData.to_s).at("//epp:resData//domain:infData//domain:roid/"),
           :domainNs => Array.new,
           :domainClID => Hpricot::XML(resData.to_s).at("//epp:resData//domain:infData//domain:clID/"),
+          :domainCrID => Hpricot::XML(resData.to_s).at("//epp:resData//domain:infData//domain:crID/"),
+          :domainCrDate => Hpricot::XML(resData.to_s).at("//epp:resData//domain:infData//domain:crDate/"),
+          :domainUpID => Hpricot::XML(resData.to_s).at("//epp:resData//domain:infData//domain:upID/"),
+          :domainUpDate => Hpricot::XML(resData.to_s).at("//epp:resData//domain:infData//domain:upDate/"),
+          :domainExDate => Hpricot::XML(resData.to_s).at("//epp:resData//domain:infData//domain:exDate/"),
         }
         Hpricot::XML(resData.to_s).search("//epp:resData//domain:infData//domain:ns//domain:hostAttr//domain:hostName/").each do |ns|
           infoDomain[:domainNs] << ns
