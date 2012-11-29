@@ -35,6 +35,56 @@ apply_clienthold(domainName)
 
 create_contact(contactId, contactName, contactOrg, contactStreet1, contactStreet2, contactStreet3, contactCity, contactProvince, contactPostalcode, contactCountry, contactTel, contactFax, contactEmail, contactPassword )
 
+#### create_domain(domainName,registrant,hosts,domainSecret)
+
+"hosts" as a array of hashes.
+
+```
+    {
+      "hostname" => 'hostname',
+      "ip_v4_address" => 'IPv4 Address',
+      "ip_v6_address" => 'IPv6 Address'
+    }
+```
+
+Using an external NS you need only the hostname
+
+```
+create_domain(
+  "testing.test.dnservices.co.za",
+  "1234567891234567",
+  [
+    {
+      "hostname" => 'ns1.domain.co.za'
+    },
+    {
+      "hostname" => 'ns2..domain.co.za'
+    }
+  ],
+  "coza"
+)
+```
+
+Using a NS that's hostname falls part of the domain being registered, IP details are required
+
+```
+create_domain(
+  "testing.test.dnservices.co.za",
+  "1234567891234567",
+  [
+    {
+      "hostname" => 'ns1.testing.test.dnservices.co.za',
+      "ip_v4_address" => '1.1.1.1'
+    },
+    {
+      "hostname" => 'ns2.testing.test.dnservices.co.za',
+      "ip_v4_address" => '2.2.2.2'
+    }
+  ],
+  "coza"
+)
+```
+
 create_domain_with_host(domainName, registrant, nsHostname1, nsipv4Address1, nsipv6Address1, nsHostname2, nsipv4Address2, nsipv6Address2, domainSecret )
 
 create_domain_with_ns(domainName, registrant, nsHostname1, nsHostname2, domainSecret )
