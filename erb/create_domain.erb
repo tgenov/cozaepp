@@ -5,8 +5,13 @@
       <domain:create xmlns:domain="urn:ietf:params:xml:ns:domain-1.0" xsi:schemaLocation="urn:ietf:params:xml:ns:domain-1.0 domain-1.0.xsd">
       <domain:name><%= domainName %></domain:name>
         <domain:ns>
-        <domain:hostObj><%= nsHostname1 %></domain:hostObj>
-        <domain:hostObj><%= nsHostname2 %></domain:hostObj>
+          <% hosts.each do |host| %>
+          <domain:hostAttr>
+            <domain:hostName><%= host["hostname"] %></domain:hostName>
+            <% if host["ip_v4_address"] %><domain:hostAddr ip="v4"><%= host["ip_v4_address"] %></domain:hostAddr><% end %>
+            <% if host["ip_v6_address"] %><domain:hostAddr ip="v6"><%= host["ip_v6_address"] %></domain:hostAddr><% end %>
+          </domain:hostAttr>
+          <% end %>
         </domain:ns>
         <domain:registrant><%= registrant %></domain:registrant>
         <domain:authInfo>
@@ -17,4 +22,3 @@
     <clTRID><%= cltrid %></clTRID>
   </command>
 </epp>
-

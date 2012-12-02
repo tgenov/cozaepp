@@ -278,6 +278,21 @@ module CozaEPP
       return {:status => statusCode, :text => statusMsg, :cltrid => cltrid, :svtrid => svtrid }
     end
 
+    def create_domain(domainName,
+                      registrant,
+                      hosts=[],
+                      domainSecret
+                      )
+
+      cltrid = gen_cltrid
+      xml = ERB.new(File.read(@gemRoot + "/erb/create_domain.erb")).result(binding)
+      result = @epp.send_request(xml)
+      statusCode = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result")[:code]
+      statusMsg = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result//epp:msg/")
+      svtrid = Hpricot::XML(result).at("//epp:epp//epp:response//epp:trID//epp:svTRID/")
+      return {:status => statusCode, :text => statusMsg, :cltrid => cltrid, :svtrid => svtrid }
+    end
+
     def create_domain_with_ns(domainName,
                       registrant,
                       nsHostname1,
