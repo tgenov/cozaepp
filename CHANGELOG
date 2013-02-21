@@ -1,3 +1,7 @@
+Version 0.1.2
+-fixed update_contact and added availCode to check availability of domain
+-added transfer_query() for legacy domains
+
 Version 0.0.5
 *New EPP messages -
  -cancel_action() - cancels pending events
