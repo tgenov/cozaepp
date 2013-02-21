@@ -353,11 +353,11 @@ module CozaEPP
         cltrid = gen_cltrid
         xml = ERB.new(File.read(@gemRoot + "/erb/check_domain.erb")).result(binding)
         result = @epp.send_request(xml)
-        puts result
         statusCode = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result")[:code]
+        availCode = Hpricot::XML(result).at("//epp:epp//epp:response//epp:resData//domain:chkData//domain:cd//domain:name")[:avail]
         statusMsg = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result//epp:msg/")
         svtrid = Hpricot::XML(result).at("//epp:epp//epp:response//epp:trID//epp:svTRID/")
-        return {:status => statusCode, :text => statusMsg, :cltrid => cltrid, :svtrid => svtrid }
+        return {:status => statusCode, :text => statusMsg, :cltrid => cltrid, :svtrid => svtrid, :availcode => availCode }
     end
 
     def delete_ns(domainName,
