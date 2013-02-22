@@ -425,15 +425,15 @@ module CozaEPP
     end
 
     def transfer_query(domainName)
-        cltrid = gen_cltrid
-        xml = ERB.new(File.read(@gemRoot + "/erb/transfer_query.erb")).result(binding)
-        result = @epp.send_request(xml)
-        puts result
-        statusCode = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result")[:code]
-        statusMsg = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result//epp:msg/")
-        svtrid = Hpricot::XML(result).at("//epp:epp//epp:response//epp:trID//epp:svTRID/")
-        resData = Hpricot::XML(result).at("//epp:epp//epp:response//epp:resData//")
-              if statusCode == "1000" then
+      cltrid = gen_cltrid
+      xml = ERB.new(File.read(@gemRoot + "/erb/transfer_query.erb")).result(binding)
+      result = @epp.send_request(xml)
+      puts result
+      statusCode = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result")[:code]
+      statusMsg = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result//epp:msg/")
+      svtrid = Hpricot::XML(result).at("//epp:epp//epp:response//epp:trID//epp:svTRID/")
+      resData = Hpricot::XML(result).at("//epp:epp//epp:response//epp:resData//")
+      if statusCode == "1000" then
         resData = Hpricot::XML(result).at("//epp:epp//epp:response//epp:resData//")
         trnData = {
           :domainName => Hpricot::XML(resData.to_s).at("//epp:resData//domain:trnData//domain:name"),
@@ -443,7 +443,6 @@ module CozaEPP
           :domainacID => Hpricot::XML(resData.to_s).at("//epp:resData//domain:trnData//domain:acID"),
           :domainacDate => Hpricot::XML(resData.to_s).at("//epp:resData//domain:trnData//domain:acDate")
         }
-        end
         return {:status => statusCode, :text => statusMsg, :cltrid => cltrid, :svtrid => svtrid, :trnData => trnData }
       else
         return {:status => statusCode, :text => statusMsg, :cltrid => cltrid, :svtrid => svtrid }
