@@ -3,9 +3,9 @@
   <command>
     <transfer op="reject">
       <domain:transfer xmlns:domain="urn:ietf:params:xml:ns:domain-1.0">
-        <domain:name>example.test.dnservices.co.za</domain:name>
+        <domain:name><%= domainName %></domain:name>
       </domain:transfer>
     </transfer>
-    <clTRID>ABC-123456789012</clTRID>
+    <clTRID><%= cltrid %></clTRID>
   </command>
 </epp>
