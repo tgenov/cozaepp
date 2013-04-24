@@ -455,6 +455,26 @@ module CozaEPP
       resData = Hpricot::XML(result).at("//epp:epp//epp:response//epp:resData//")
       return {:status => statusCode, :text => statusMsg, :cltrid => cltrid, :svtrid => svtrid, :resdata => resData }
     end
+    
+    def transfer_reject(domainName)
+      cltrid = gen_cltrid
+      xml = ERB.new(File.read(@gemRoot + "/erb/transfer_reject.erb")).result(binding)
+      result = @epp.send_request(xml)
+      statusCode = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result")[:code]
+      statusMsg = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result//epp:msg/")
+      svtrid = Hpricot::XML(result).at("//epp:epp//epp:response//epp:trID//epp:svTRID/")
+      return {:status => statusCode, :text => statusMsg, :cltrid => cltrid, :svtrid => svtrid}
+    end
+
+    def transfer_cancel(domainName)
+      cltrid = gen_cltrid
+      xml = ERB.new(File.read(@gemRoot + "/erb/transfer_cancel.erb")).result(binding)
+      result = @epp.send_request(xml)
+      statusCode = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result")[:code]
+      statusMsg = Hpricot::XML(result).at("//epp:epp//epp:response//epp:result//epp:msg/")
+      svtrid = Hpricot::XML(result).at("//epp:epp//epp:response//epp:trID//epp:svTRID/")
+      return {:status => statusCode, :text => statusMsg, :cltrid => cltrid, :svtrid => svtrid}
+    end
 
     private
     def gen_cltrid
