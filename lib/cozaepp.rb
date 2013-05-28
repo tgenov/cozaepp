@@ -250,6 +250,8 @@ module CozaEPP
         infoDomain = {
           :domainName => Hpricot::XML(resData.to_s).at("//epp:resData//domain:infData//domain:name/"),
           :domainRoid => Hpricot::XML(resData.to_s).at("//epp:resData//domain:infData//domain:roid/"),
+          :domainStatusText => Hpricot::XML(resData.to_s).at("//epp:resData//domain:infData//domain:status/"),
+          :domainStatus => Hpricot::XML(resData.to_s).at("//epp:resData//domain:infData//domain:status")['s'],
           :domainNs => Array.new,
           :domainClID => Hpricot::XML(resData.to_s).at("//epp:resData//domain:infData//domain:clID/"),
           :domainCrID => Hpricot::XML(resData.to_s).at("//epp:resData//domain:infData//domain:crID/"),
