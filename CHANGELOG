@@ -1,3 +1,9 @@
+Version 0.1.4
+-:domainStatusText and :domainStatus in :resdata for info_domain()
+
+Version 0.1.3
+-Added transfer_reject and transfer_cancel
+
 Version 0.1.2
 -fixed update_contact and added availCode to check availability of domain
 -added transfer_query() for legacy domains
